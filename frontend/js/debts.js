@@ -3,6 +3,7 @@
  */
 
 let selectedDebtId = null;
+let currentSavings = 0;
 
 // ───────────────────────────────── Init ────────────────────────────────────
 
@@ -85,7 +86,7 @@ function renderDebtList(debts, summary) {
         <div class="debt-card ${debt.is_paid ? 'debt-paid' : ''} ${isOverdue ? 'debt-overdue' : ''}" data-id="${debt.id}">
             <div class="debt-card-header">
                 <div class="debt-title-row">
-                    <span class="debt-icon">${debt.is_paid ? '✅' : isOverdue ? '⚠️' : '�️'}</span>
+                    <span class="debt-icon">${debt.is_paid ? '✅' : isOverdue ? '⚠️' : '🛡️'}</span>
                     <div>
                         <strong class="debt-name">${debt.title}</strong>
                         ${isOverdue ? '<span class="overdue-badge">VADESİ GEÇMİŞ</span>' : ''}
@@ -109,12 +110,43 @@ function renderDebtList(debts, summary) {
             </div>
 
             <div class="debt-actions">
-                ${!debt.is_paid ? `<button class="btn btn-sm btn-success" onclick="openPayModal(${debt.id}, '${debt.title}', ${debt.remaining})">💳 Ödeme Yap</button>` : ''}
-                <button class="btn btn-sm btn-ghost" onclick="openPaymentsModal(${debt.id}, '${debt.title}')">📋 Geçmiş</button>
-                <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${debt.id}, '${debt.title}')">🗑️</button>
+                ${!debt.is_paid ? `<button class="btn btn-sm btn-success action-pay-btn" data-id="${debt.id}" data-title="${debt.title.replace(/"/g, '&quot;')}" data-remaining="${debt.remaining}">💳 Ödeme Yap</button>` : ''}
+                <button class="btn btn-sm btn-ghost action-history-btn" data-id="${debt.id}" data-title="${debt.title.replace(/"/g, '&quot;')}">📋 Geçmiş</button>
+                <button class="btn btn-sm btn-danger action-delete-btn" data-id="${debt.id}" data-title="${debt.title.replace(/"/g, '&quot;')}">🗑️</button>
             </div>
         </div>`;
     }).join('');
+
+    // Attach event delegation for action buttons
+    container.removeEventListener('click', handleDebtActionClick); // Avoid duplicate listeners
+    container.addEventListener('click', handleDebtActionClick);
+}
+
+function handleDebtActionClick(e) {
+    const payBtn = e.target.closest('.action-pay-btn');
+    if (payBtn) {
+        const id = payBtn.dataset.id;
+        const title = payBtn.dataset.title;
+        const remaining = parseFloat(payBtn.dataset.remaining);
+        openPayModal(id, title, remaining);
+        return;
+    }
+
+    const historyBtn = e.target.closest('.action-history-btn');
+    if (historyBtn) {
+        const id = historyBtn.dataset.id;
+        const title = historyBtn.dataset.title;
+        openPaymentsModal(id, title);
+        return;
+    }
+
+    const deleteBtn = e.target.closest('.action-delete-btn');
+    if (deleteBtn) {
+        const id = deleteBtn.dataset.id;
+        const title = deleteBtn.dataset.title;
+        openDeleteModal(id, title);
+        return;
+    }
 }
 
 // ─────────────────────────────── Borç Formu ────────────────────────────────
@@ -150,8 +182,15 @@ function initPayModal() {
         e.preventDefault();
         if (!selectedDebtId) return;
 
+        const amount = parseFloat(document.getElementById('payAmount').value);
+
+        if (amount > currentSavings) {
+            Toast.error(`Yetersiz birikim! Maksimum ${Utils.formatCurrency(currentSavings, Utils.getCurrency())} ödeyebilirsiniz.`);
+            return;
+        }
+
         const payload = {
-            amount: parseFloat(document.getElementById('payAmount').value),
+            amount: amount,
             paid_at: document.getElementById('payDate').value,
             note: document.getElementById('payNote').value.trim() || null,
         };
@@ -161,13 +200,24 @@ function initPayModal() {
             Toast.success('💳 Ödeme kaydedildi!');
             closePayModal();
             await loadDebtData();
+            // Refresh app-wide savings data if implemented elsewhere
         } catch (err) {
             Toast.error('Ödeme yapılamadı: ' + err.message);
         }
     });
+
+    document.getElementById('paySavingsHint')?.addEventListener('click', () => {
+        const remaining = parseFloat(document.getElementById('payAmount').max);
+        const maxPayable = Math.min(remaining, currentSavings);
+        if (maxPayable > 0) {
+            document.getElementById('payAmount').value = maxPayable.toFixed(2);
+        } else {
+            Toast.error('Kullanılabilir birikiminiz yok.');
+        }
+    });
 }
 
-function openPayModal(debtId, title, remaining) {
+window.openPayModal = async function (debtId, title, remaining) {
     selectedDebtId = debtId;
     document.getElementById('payModalTitle').textContent = `💳 Ödeme — ${title}`;
     document.getElementById('payAmount').value = '';
@@ -175,19 +225,34 @@ function openPayModal(debtId, title, remaining) {
     document.getElementById('payDate').value = Utils.today();
     document.getElementById('payNote').value = '';
     document.getElementById('payMaxHint').textContent = `Kalan: ${Utils.formatCurrency(remaining, Utils.getCurrency())}`;
-    document.getElementById('payModal').style.display = 'flex';
-}
 
-function closePayModal() {
+    // Fetch current savings
+    try {
+        const savingsData = await Api.get('/savings/scorecard');
+        currentSavings = savingsData.stats.overall_savings > 0 ? savingsData.stats.overall_savings : 0;
+    } catch (err) {
+        console.error('Savings fetch error:', err);
+        currentSavings = 0;
+    }
+
+    document.getElementById('paySavingsHint').textContent = `Birikim: ${Utils.formatCurrency(currentSavings, Utils.getCurrency())} (Tümünü Kullan)`;
+    document.getElementById('payModal').style.display = 'flex';
+    document.getElementById('payModal').classList.add('show');
+};
+
+window.closePayModal = function () {
     document.getElementById('payModal').style.display = 'none';
+    document.getElementById('payModal').classList.remove('show');
     selectedDebtId = null;
-}
+    currentSavings = 0;
+};
 
 // ───────────────────────────── Ödeme Geçmişi ───────────────────────────────
 
-async function openPaymentsModal(debtId, title) {
+window.openPaymentsModal = async function (debtId, title) {
     document.getElementById('paymentModalTitle').textContent = `📋 Ödeme Geçmişi — ${title}`;
     document.getElementById('paymentsModal').style.display = 'flex';
+    document.getElementById('paymentsModal').classList.add('show');
     document.getElementById('paymentHistoryList').innerHTML = '<div class="loading">Yükleniyor...</div>';
 
     try {
@@ -213,6 +278,7 @@ async function openPaymentsModal(debtId, title) {
 
 document.getElementById('closePaymentsModal')?.addEventListener('click', () => {
     document.getElementById('paymentsModal').style.display = 'none';
+    document.getElementById('paymentsModal').classList.remove('show');
 });
 
 // ─────────────────────────────── Silme Modalı ──────────────────────────────
@@ -233,21 +299,24 @@ function initDeleteModal() {
     });
 }
 
-function openDeleteModal(debtId, title) {
+window.openDeleteModal = function (debtId, title) {
     selectedDebtId = debtId;
     document.getElementById('deleteMessage').textContent = `"${title}" borcunu silmek istediğinizden emin misiniz? Tüm ödeme geçmişi de silinecek!`;
     document.getElementById('deleteModal').style.display = 'flex';
-}
+    document.getElementById('deleteModal').classList.add('show');
+};
 
-function closeDeleteModal() {
+window.closeDeleteModal = function () {
     document.getElementById('deleteModal').style.display = 'none';
+    document.getElementById('deleteModal').classList.remove('show');
     selectedDebtId = null;
-}
+};
 
 // Modal dışına tıklayınca kapat
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal-overlay')) {
         e.target.style.display = 'none';
+        e.target.classList.remove('show');
         selectedDebtId = null;
     }
 });

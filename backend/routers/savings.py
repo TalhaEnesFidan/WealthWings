@@ -156,6 +156,17 @@ def get_scorecard(
     """Skorkart — tüm aylık verilerle birlikte istatistikler"""
     history = get_savings_history(db=db, current_user=current_user)
 
+    # Kümülatif (Tüm Zamanlar) Toplam Birikim hesapla (Her durumda gerekli)
+    total_inc = db.query(
+        func.coalesce(func.sum(Transaction.amount), 0)
+    ).filter(Transaction.user_id == current_user.id, Transaction.type == "income").scalar()
+
+    total_exp = db.query(
+        func.coalesce(func.sum(Transaction.amount), 0)
+    ).filter(Transaction.user_id == current_user.id, Transaction.type == "expense").scalar()
+
+    overall_savings = float(total_inc) - float(total_exp)
+
     if not history:
         return {
             "history": [],
@@ -164,6 +175,7 @@ def get_scorecard(
                 "best_month": None,
                 "worst_month": None,
                 "total_net_savings": 0,
+                "overall_savings": round(overall_savings, 2),
                 "goal_streak": 0,
             },
             "suggestion": None,
@@ -192,16 +204,7 @@ def get_scorecard(
         f"Bu ay en az %{suggestion_rate*100:.0f} hedefle! 🎯"
     ) if len(history) > 0 else None
 
-    # Kümülatif (Tüm Zamanlar) Toplam Birikim
-    total_inc = db.query(
-        func.coalesce(func.sum(Transaction.amount), 0)
-    ).filter(Transaction.user_id == current_user.id, Transaction.type == "income").scalar()
-
-    total_exp = db.query(
-        func.coalesce(func.sum(Transaction.amount), 0)
-    ).filter(Transaction.user_id == current_user.id, Transaction.type == "expense").scalar()
-
-    overall_savings = float(total_inc) - float(total_exp)
+    # overall_savings yukarida hesaplandı
 
     return {
         "history": history,

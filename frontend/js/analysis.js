@@ -198,12 +198,12 @@ function renderTrendChart(data) {
             datasets: [{
                 label: `${data.category} Harcamaları`,
                 data: amounts,
-                borderColor: '#ef4444',
-                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                borderColor: '#9575cd',
+                backgroundColor: 'rgba(149, 117, 205, 0.1)',
                 borderWidth: 2,
                 fill: true,
                 tension: 0.3,
-                pointBackgroundColor: '#ef4444'
+                pointBackgroundColor: '#9575cd'
             }]
         },
         options: {

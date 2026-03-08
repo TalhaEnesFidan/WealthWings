@@ -16,10 +16,10 @@ body.dark {
     --primary-light: rgba(196, 251, 109, 0.1);
     --primary-gradient: none;
 
-    --success: #c4fb6d;
-    --success-light: rgba(196, 251, 109, 0.1);
-    --danger: #ff4747;
-    --danger-light: rgba(255, 71, 71, 0.1);
+    --success: #00bcd4;
+    --success-light: rgba(0, 188, 212, 0.1);
+    --danger: #9575cd;
+    --danger-light: rgba(149, 117, 205, 0.1);
     --warning: #ffbf00;
     --warning-light: rgba(255, 191, 0, 0.1);
     --info: #00f0ff;
@@ -767,6 +767,11 @@ h4 {
     background: var(--bg-input);
     transition: var(--transition);
     outline: none;
+}
+
+.form-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
 }
 
 .form-input:focus,

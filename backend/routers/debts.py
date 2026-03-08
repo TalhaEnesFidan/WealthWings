@@ -129,6 +129,23 @@ def pay_debt(
             detail=f"Ödeme miktarı ({payment_data.amount}) kalan borçtan ({debt.remaining}) fazla olamaz",
         )
 
+    # Birikim kontrolü: Kullanıcının toplam birikimi ödeme miktarından az ise hata ver
+    from backend.models import Transaction
+    total_inc = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
+        Transaction.user_id == current_user.id, Transaction.type == "income"
+    ).scalar()
+    total_exp = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
+        Transaction.user_id == current_user.id, Transaction.type == "expense"
+    ).scalar()
+    
+    overall_savings = float(total_inc) - float(total_exp)
+    
+    if payment_data.amount > overall_savings:
+        raise HTTPException(
+            status_code=400,
+            detail="Yetersiz birikim! Birikiminizden fazla borç ödemesi yapamazsınız."
+        )
+
     # Ödeme kaydı oluştur
     payment = DebtPayment(
         debt_id=debt_id,
@@ -138,6 +155,39 @@ def pay_debt(
         paid_at=payment_data.paid_at,
     )
     db.add(payment)
+
+    # İşlemlere "gider" olarak ekle ki birikimden (overall_savings) düşsün
+    from backend.models import Transaction, Category
+    
+    debt_cat = db.query(Category).filter(
+        Category.user_id == current_user.id,
+        Category.name == "Borç Ödemesi",
+        Category.type == "expense"
+    ).first()
+    
+    if not debt_cat:
+        debt_cat = Category(
+            user_id=current_user.id,
+            name="Borç Ödemesi",
+            type="expense",
+            icon="🛡️",
+            color="#ef4444",
+            is_default=True
+        )
+        db.add(debt_cat)
+        db.commit()
+        db.refresh(debt_cat)
+
+    txn = Transaction(
+        user_id=current_user.id,
+        category_id=debt_cat.id,
+        type="expense",
+        amount=payment_data.amount,
+        description=f"Borç Ödemesi: {debt.title}",
+        note=payment_data.note,
+        transaction_date=payment_data.paid_at,
+    )
+    db.add(txn)
 
     # Kalan borcu güncelle
     debt.remaining -= payment_data.amount

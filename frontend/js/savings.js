@@ -168,10 +168,10 @@ function renderTrendChart(history) {
     const rates = history.map(h => h.savings_rate_pct || 0);
     const goalRates = history.map(h => h.goal_rate_pct || null);
     const colors = history.map(h => {
-        if (h.savings_rate_pct >= 70) return '#22c55e';
+        if (h.savings_rate_pct >= 70) return '#00bcd4';
         if (h.savings_rate_pct >= 50) return '#6366f1';
         if (h.savings_rate_pct >= 30) return '#f59e0b';
-        return '#ef4444';
+        return '#9575cd';
     });
 
     if (savingsTrendChart) savingsTrendChart.destroy();

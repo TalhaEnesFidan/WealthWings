@@ -146,14 +146,14 @@ function renderIncomeExpenseChart(monthlyData) {
                 {
                     label: 'Gelir',
                     data: monthlyData.map(d => d.income),
-                    backgroundColor: '#22c55e',
+                    backgroundColor: '#00bcd4',
                     borderRadius: 6,
                     barPercentage: 0.7,
                 },
                 {
                     label: 'Gider',
                     data: monthlyData.map(d => d.expense),
-                    backgroundColor: '#ef4444',
+                    backgroundColor: '#9575cd',
                     borderRadius: 6,
                     barPercentage: 0.7,
                 }
