@@ -1,0 +1,37 @@
+{
+    "nav": {
+        "dashboard": "Dashboard",
+        "transactions": "İşlemler",
+        "categories": "Kategoriler",
+        "savings": "Birikim & Skor",
+        "debts": "Borç Yönetimi",
+        "analysis": "Geçmiş Analiz",
+        "reports": "Raporlar",
+        "settings": "Ayarlar",
+        "logout": "🚪 Çıkış"
+    },
+    "settings": {
+        "title": "⚙️ Ayarlar",
+        "profileTitle": "👤 Profil Bilgileri",
+        "username": "Kullanıcı Adı",
+        "fullName": "Ad Soyad",
+        "email": "E-posta",
+        "language": "Dili Seçin",
+        "currency": "Varsayılan Para Birimi",
+        "saveProfile": "Profili Güncelle",
+        "passwordTitle": "🔑 Şifre Değiştir",
+        "currentPassword": "Mevcut Şifre",
+        "newPassword": "Yeni Şifre",
+        "confirmPassword": "Yeni Şifre (Tekrar)",
+        "updatePassword": "Şifreyi Güncelle",
+        "successProfile": "Profil başarıyla güncellendi!",
+        "successPassword": "Şifre güncellendi, lütfen tekrar giriş yapın.",
+        "dangerZone": "Tehlike Bölgesi",
+        "deleteAccount": "Hesabımı Kalıcı Olarak Sil",
+        "deleteAccountDesc": "Hesabınızı sildiğinizde tüm işlemleriniz, borçlarınız ve ayarlarınız geri döndürülemez şekilde silinecektir.",
+        "deleteConfirmTitle": "Hesabınızı silmek istediğinize emin misiniz?",
+        "deleteConfirmText": "Bu işlem geri alınamaz! Tüm verileriniz yok edilecektir.",
+        "deleteAccountBtn": "Evet, Hesabımı Sil",
+        "cancelBtn": "İptal"
+    }
+}

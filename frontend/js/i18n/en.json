@@ -1,0 +1,37 @@
+{
+    "nav": {
+        "dashboard": "Dashboard",
+        "transactions": "Transactions",
+        "categories": "Categories",
+        "savings": "Savings & Score",
+        "debts": "Debts",
+        "analysis": "History Analysis",
+        "reports": "Reports",
+        "settings": "Settings",
+        "logout": "🚪 Logout"
+    },
+    "settings": {
+        "title": "⚙️ Settings",
+        "profileTitle": "👤 Profile Details",
+        "username": "Username",
+        "fullName": "Full Name",
+        "email": "Email Address",
+        "language": "Select Language",
+        "currency": "Default Currency",
+        "saveProfile": "Update Profile",
+        "passwordTitle": "🔑 Change Password",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm New Password",
+        "updatePassword": "Update Password",
+        "successProfile": "Profile updated successfully!",
+        "successPassword": "Password changed. Please login again.",
+        "dangerZone": "Danger Zone",
+        "deleteAccount": "Delete My Account Permanently",
+        "deleteAccountDesc": "When you delete your account, all your transactions, debts, and settings will be permanently removed.",
+        "deleteConfirmTitle": "Are you sure you want to delete your account?",
+        "deleteConfirmText": "This action cannot be undone! All your data will be destroyed.",
+        "deleteAccountBtn": "Yes, Delete My Account",
+        "cancelBtn": "Cancel"
+    }
+}

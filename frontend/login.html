@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WealthWings — Kişisel finans ve birikim takip uygulaması. Giriş yapın veya hesap oluşturun.">
+    <title>WealthWings — Giriş</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <!-- Logo -->
+            <div class="login-logo">
+                <div class="login-logo-icon">💰</div>
+                <h1>WealthWings</h1>
+                <p>Kişisel Finans & Birikim Takibi</p>
+            </div>
+
+            <!-- Tab'lar -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="login-tab">Giriş Yap</button>
+                <button class="auth-tab" id="register-tab">Hesap Oluştur</button>
+            </div>
+
+            <!-- Giriş Formu -->
+            <form class="auth-form active" id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-username">Kullanıcı Adı</label>
+                    <input type="text" class="form-input" id="login-username" placeholder="Kullanıcı adınız" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Şifre</label>
+                    <input type="password" class="form-input" id="login-password" placeholder="Şifreniz" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="login-submit">
+                    Giriş Yap
+                </button>
+            </form>
+
+            <!-- Kayıt Formu -->
+            <form class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label class="form-label" for="register-fullname">Ad Soyad</label>
+                    <input type="text" class="form-input" id="register-fullname" placeholder="Ad Soyad (opsiyonel)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="register-email">E-posta</label>
+                    <input type="email" class="form-input" id="register-email" placeholder="ornek@mail.com (opsiyonel)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="register-username">Kullanıcı Adı</label>
+                    <input type="text" class="form-input" id="register-username" placeholder="Kullanıcı adı seçin" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="register-password">Şifre</label>
+                    <input type="password" class="form-input" id="register-password" placeholder="En az 4 karakter" autocomplete="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="register-password-confirm">Şifre Tekrar</label>
+                    <input type="password" class="form-input" id="register-password-confirm" placeholder="Şifrenizi tekrar girin" autocomplete="new-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="register-submit">
+                    Hesap Oluştur
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

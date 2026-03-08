@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Borç Yönetimi — WealthWings</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <div class="app-layout">
+        <div class="sidebar-overlay"></div>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">💰</div>
+                <div class="sidebar-brand-text">WealthWings</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item" data-i18n="nav.dashboard"><span class="nav-icon">📊</span><span
+                        class="nav-label">Dashboard</span></a>
+                <a href="transactions.html" class="nav-item" data-i18n="nav.transactions"><span
+                        class="nav-icon">💳</span><span class="nav-label">İşlemler</span></a>
+                <a href="categories.html" class="nav-item" data-i18n="nav.categories"><span
+                        class="nav-icon">🏷️</span><span class="nav-label">Kategoriler</span></a>
+                <a href="savings.html" class="nav-item" data-i18n="nav.savings"><span class="nav-icon">🏆</span><span
+                        class="nav-label">Birikim & Skor</span></a>
+                <a href="debts.html" class="nav-item active" data-i18n="nav.debts"><span
+                        class="nav-icon">🛡️</span><span class="nav-label">Borç Yönetimi</span></a>
+                <a href="analysis.html" class="nav-item" data-i18n="nav.analysis"><span class="nav-icon">📈</span><span
+                        class="nav-label">Geçmiş Analiz</span></a>
+                <a href="reports.html" class="nav-item" data-i18n="nav.reports"><span class="nav-icon">📄</span><span
+                        class="nav-label">Raporlar</span></a>
+                <a href="settings.html" class="nav-item" data-i18n="nav.settings"><span class="nav-icon">⚙️</span><span
+                        class="nav-label">Ayarlar</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="user-avatar-text">U</div>
+                    <div>
+                        <div class="sidebar-user-name" id="user-display-name">Kullanıcı</div>
+                        <div class="sidebar-user-role">Kişisel Hesap</div>
+                    </div>
+                </div>
+                <a href="#" id="logout-btn" class="logout-link" data-i18n="nav.logout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-wrapper">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="mobile-menu-toggle">☰</button>
+                    <h1 class="topbar-title">🛡️ Borç Yönetimi</h1>
+                </div>
+                <div class="topbar-actions">
+                    <button class="theme-toggle" id="themeToggle" title="Tema Değiştir">🌙</button>
+                    <span class="user-greeting" id="userGreeting">Merhaba!</span>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <div class="content-wrapper">
+
+                    <!-- Özet Kartları -->
+                    <div class="stats-grid stats-grid-3" id="debtSummaryCards">
+                        <div class="stat-card stat-card-danger">
+                            <div class="stat-icon">🛡️</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Toplam Aktif Borç</span>
+                                <span class="stat-value" id="totalRemaining">—</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Bu Ay Ödenen</span>
+                                <span class="stat-value" id="monthlyPayments">—</span>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-card-success">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Tamamlanan Borç</span>
+                                <span class="stat-value" id="paidCount">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- İki Sütun: Form + Liste -->
+                    <div class="grid-2">
+
+                        <!-- Borç Ekleme Formu -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">➕ Yeni Borç Ekle</h2>
+                            </div>
+                            <div class="card-body">
+                                <form id="debtForm" class="form-stack">
+                                    <div class="form-group">
+                                        <label class="form-label">Borç Adı *</label>
+                                        <input type="text" id="debtTitle" class="form-input"
+                                            placeholder="örn: Kredi kartı Mart, Ali'ye borç" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Toplam Tutar *</label>
+                                        <input type="number" id="debtAmount" class="form-input" placeholder="0.00"
+                                            step="0.01" min="0.01" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Son Ödeme Tarihi</label>
+                                        <input type="date" id="debtDueDate" class="form-input" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Not / Açıklama</label>
+                                        <textarea id="debtDescription" class="form-textarea" rows="2"
+                                            placeholder="İsteğe bağlı not..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">➕ Borç Ekle</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Aktif Borçlar -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">📋 Aktif Borçlar</h2>
+                                <label class="toggle-label"
+                                    style="display:flex; align-items:center; gap:8px; font-size:12px;">
+                                    <input type="checkbox" id="showPaidToggle" />
+                                    <span>Tamamlananları Göster</span>
+                                </label>
+                            </div>
+                            <div class="card-body">
+                                <div id="debtList" class="debt-list">
+                                    <div class="empty-state">Yükleniyor...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Ödeme Geçmişi Modal -->
+    <div class="modal-overlay" id="paymentsModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="paymentModalTitle">Ödeme Geçmişi</h3>
+                <button class="modal-close" id="closePaymentsModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="paymentHistoryList" class="payment-history"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ödeme Yap Modal -->
+    <div class="modal-overlay" id="payModal" style="display:none">
+        <div class="modal-card modal-sm">
+            <div class="modal-header">
+                <h3 id="payModalTitle">Ödeme Yap</h3>
+                <button class="modal-close" id="closePayModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="payForm" class="form-stack">
+                    <div class="form-group">
+                        <label class="form-label">Ödeme Miktarı *</label>
+                        <input type="number" id="payAmount" class="form-input" placeholder="0.00" step="0.01" min="0.01"
+                            required />
+                        <small class="form-hint" id="payMaxHint"></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ödeme Tarihi *</label>
+                        <input type="date" id="payDate" class="form-input" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Not</label>
+                        <input type="text" id="payNote" class="form-input" placeholder="İsteğe bağlı not" />
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top:16px;">
+                        <button type="button" class="btn btn-secondary" id="cancelPayBtn">İptal</button>
+                        <button type="submit" class="btn btn-primary btn-block">💳 Ödemeyi Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Silme Onay Modalı -->
+    <div class="modal-overlay" id="deleteModal" style="display:none">
+        <div class="modal-card modal-sm">
+            <div class="modal-header">
+                <h3>Borcu Sil</h3>
+                <button class="modal-close" id="closeDeleteModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteMessage">Bu borcu silmek istediğinizden emin misiniz?</p>
+                <div style="display:flex; gap:10px; margin-top:16px;">
+                    <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">İptal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">🗑️ Evet, Sil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Bildirimleri -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/debts.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+
+</html>

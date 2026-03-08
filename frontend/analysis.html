@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geçmiş Analiz — WealthWings</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .heatmap-container {
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(90px, 1fr));
+            gap: 6px;
+            margin-top: 16px;
+            min-width: 1100px;
+        }
+
+        .heatmap-cell {
+            min-height: 48px;
+            padding: 4px 2px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            white-space: nowrap;
+            overflow: visible;
+        }
+
+        .heatmap-cell:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .heatmap-level-negative {
+            background-color: #ef4444;
+        }
+
+        .heatmap-level-neutral {
+            background-color: #94a3b8;
+        }
+
+        .heatmap-level-positive {
+            background-color: #22c55e;
+        }
+
+        .heatmap-level-great {
+            background-color: #16a34a;
+        }
+
+        .month-labels {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(90px, 1fr));
+            gap: 6px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            min-width: 1100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <div class="sidebar-overlay"></div>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">💰</div>
+                <div class="sidebar-brand-text">WealthWings</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item" data-i18n="nav.dashboard"><span class="nav-icon">📊</span><span
+                        class="nav-label">Dashboard</span></a>
+                <a href="transactions.html" class="nav-item" data-i18n="nav.transactions"><span
+                        class="nav-icon">💳</span><span class="nav-label">İşlemler</span></a>
+                <a href="categories.html" class="nav-item" data-i18n="nav.categories"><span
+                        class="nav-icon">🏷️</span><span class="nav-label">Kategoriler</span></a>
+                <a href="savings.html" class="nav-item" data-i18n="nav.savings"><span class="nav-icon">🏆</span><span
+                        class="nav-label">Birikim & Skor</span></a>
+                <a href="debts.html" class="nav-item" data-i18n="nav.debts"><span class="nav-icon">🛡️</span><span
+                        class="nav-label">Borç Yönetimi</span></a>
+                <a href="analysis.html" class="nav-item active" data-i18n="nav.analysis"><span
+                        class="nav-icon">📈</span><span class="nav-label">Geçmiş Analiz</span></a>
+                <a href="reports.html" class="nav-item" data-i18n="nav.reports"><span class="nav-icon">📄</span><span
+                        class="nav-label">Raporlar</span></a>
+                <a href="settings.html" class="nav-item" data-i18n="nav.settings"><span class="nav-icon">⚙️</span><span
+                        class="nav-label">Ayarlar</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="user-avatar-text">U</div>
+                    <div>
+                        <div class="sidebar-user-name" id="user-display-name">Kullanıcı</div>
+                        <div class="sidebar-user-role">Kişisel Hesap</div>
+                    </div>
+                </div>
+                <a href="#" id="logout-btn" class="logout-link" data-i18n="nav.logout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-wrapper">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="mobile-menu-toggle">☰</button>
+                    <h1 class="topbar-title">📈 Geçmiş Analiz</h1>
+                </div>
+                <div class="topbar-actions">
+                    <button class="theme-toggle" id="themeToggle" title="Tema Değiştir">🌙</button>
+                    <span class="user-greeting" id="userGreeting">Merhaba!</span>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <div class="content-wrapper">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Yıllık Nakit Akışı Isı Haritası</h2>
+                            <select id="yearSelect" class="form-input" style="width:100px; padding: 4px; height:auto;">
+                            </select>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-sm text-muted">Aylık net birikim pozitifliği ve negatifliğini gösterir.
+                            </p>
+                            <div class="heatmap-container">
+                                <div class="heatmap-grid" id="heatmapGrid">
+                                    <!-- JS ile dolacak -->
+                                </div>
+                                <div class="month-labels"
+                                    style="min-width: 1100px; grid-template-columns: repeat(12, minmax(90px, 1fr));">
+                                    <span>Oca</span><span>Şub</span><span>Mar</span><span>Nis</span><span>May</span><span>Haz</span>
+                                    <span>Tem</span><span>Ağu</span><span>Eyl</span><span>Eki</span><span>Kas</span><span>Ara</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/analysis_v2.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+
+</html>

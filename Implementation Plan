@@ -1,0 +1,120 @@
+# 💰 WealthWings — 5 Bölümlü Uygulama Geliştirme Planı
+
+Proje dokümanındaki (`finans-birikim-uygulamasi.md`) kapsamlı finans & birikim uygulaması, 5 bölümde adım adım geliştirilecek. Her bölüm sonunda uygulama çalışır durumda test edilecek.
+
+---
+
+## Bölüm 1 — Temel Altyapı & Kimlik Doğrulama (MVP Çekirdeği)
+> **Hedef:** Backend ayağa kalksın, veritabanı oluşsun, kullanıcı kayıt/giriş yapabilsin, boş bir Dashboard sayfası açılsın.
+
+| Dosya | İçerik |
+|---|---|
+| `requirements.txt` | Tüm Python bağımlılıkları |
+| `backend/database.py` | SQLite bağlantısı, session, tablo oluşturma |
+| `backend/models.py` | `users`, `categories`, `transactions`, `savings_goals`, `debts`, `debt_payments`, `monthly_summaries` tabloları |
+| `backend/schemas.py` | Pydantic şemaları (auth, transaction, category vb.) |
+| `backend/main.py` | FastAPI app, CORS, static file serve, startup events |
+| `backend/routers/auth.py` | Register, login, logout, me endpoint'leri + JWT |
+| `frontend/login.html` | Giriş / Kayıt formu (güzel UI) |
+| `frontend/js/api.js` | Fetch wrapper, auth header ekleme |
+| `frontend/js/auth.js` | Login/register form mantığı |
+| `frontend/css/main.css` | Tam tasarım sistemi (renk paleti, layout, sidebar, kartlar, karanlık mod) |
+| `frontend/css/dark.css` | Karanlık mod override'ları |
+| `frontend/js/theme.js` | Tema toggle |
+| `frontend/index.html` | Dashboard sayfası (henüz boş kartlar, sidebar nav) |
+| `start.bat` | Windows başlatıcı |
+
+**🧪 Test:** Uygulama başlatılır → login sayfası açılır → kayıt olunur → giriş yapılır → boş Dashboard görüntülenir → karanlık mod çalışır.
+
+---
+
+## Bölüm 2 — Gelir/Gider İşlemleri & Kategoriler & Dashboard
+> **Hedef:** İşlem ekleme, listeleme, düzenleme, silme. Varsayılan + özel kategoriler. Dashboard kartları ve grafikleri canlı veri göstersin.
+
+| Dosya | İçerik |
+|---|---|
+| `backend/routers/transactions.py` | CRUD + daily/weekly/monthly özet endpoint'leri |
+| `backend/routers/categories.py` | Kategori CRUD + varsayılan kategori seeding |
+| `backend/routers/summary.py` | Dashboard özet verileri endpoint'i |
+| `frontend/transactions.html` | İşlem ekleme formu + filtreleme + liste |
+| `frontend/js/transactions.js` | İşlem CRUD + arama/filtre mantığı |
+| `frontend/categories.html` | Kategori yönetimi sayfası |
+| `frontend/js/categories.js` | Kategori ekleme/silme/düzenleme |
+| `frontend/js/dashboard.js` | Chart.js grafikleri (bar, doughnut, line) + özet kartlar |
+| `frontend/index.html` | Dashboard güncelleme (canlı kartlar, grafikler, son işlemler) |
+
+**🧪 Test:** Gelir/gider eklenir → kategoriler görülür → özel kategori eklenir → Dashboard kartları güncellenir → grafikler çalışır → işlem düzenlenir/silinir → filtreler çalışır.
+
+---
+
+## Bölüm 3 — Birikim & Skorkart Sistemi + Borç Yönetimi
+> **Hedef:** Oransal birikim hedefleri, skorkart tablosu, rozetler, motivasyon mesajları. Borç ekleme/ödeme/listeleme.
+
+| Dosya | İçerik |
+|---|---|
+| `backend/routers/savings.py` | Birikim oranı, hedef, skorkart, history endpoint'leri |
+| `backend/routers/debts.py` | Borç CRUD + ödeme + özet endpoint'leri |
+| `frontend/savings.html` | Birikim hedefleri, skorkart tablosu, rozetler, istatistikler |
+| `frontend/js/savings.js` | Birikim oranı hesaplama, hedef form, rozet sistemi |
+| `frontend/debts.html` | Borç listesi, ödeme formu, ödeme geçmişi |
+| `frontend/js/debts.js` | Borç ekleme/ödeme/listeleme mantığı |
+| `frontend/index.html` | Dashboard'a birikim widget + borç kartı ekleme |
+
+**🧪 Test:** Birikim hedefi belirlenir → skorkart görülür → rozetler doğru çalışır → motivasyon mesajları gösterilir. Borç eklenir → ödeme yapılır → kalan güncellenir → tamamlanan borçlar arşive düşer → Dashboard borç kartı çalışır.
+
+---
+
+## Bölüm 4 — Geçmiş Analiz & Raporlar (PDF/Excel)
+> **Hedef:** Ay karşılaştırma tablosu, zirve dönem analizi, yıllık grafikler, ısı haritası. PDF ve Excel export.
+
+| Dosya | İçerik |
+|---|---|
+| `backend/routers/analysis.py` | Aylık karşılaştırma, zirve dönemler, kategori toplamları |
+| `backend/routers/export.py` | PDF ve Excel indirme endpoint'leri |
+| `backend/utils/pdf_generator.py` | ReportLab ile PDF oluşturma |
+| `backend/utils/excel_generator.py` | openpyxl ile Excel oluşturma |
+| `frontend/analysis.html` | Analiz sayfası (tablo, grafikler, ısı haritası) |
+| `frontend/js/analysis.js` | Grafik ve tablo render mantığı |
+| `frontend/reports.html` | Rapor dönem seçimi, önizleme, export butonları |
+| `frontend/js/reports.js` | Rapor render + export indirme |
+
+**🧪 Test:** Analiz sayfasında ay karşılaştırma tablosu doğru → zirve dönemleri görülür → grafikler çalışır. PDF indirilir ve açılır → Excel indirilir ve kontrol edilir.
+
+---
+
+## Bölüm 5 — Ayarlar, Çok Dil Desteği, Animasyonlar & Son Cilalama
+> **Hedef:** Dil seçimi (TR/EN), profil güncelleme, şifre değiştirme, DB yedekleme, tüm verileri silme. Animasyonlar, hata yönetimi, README.
+
+| Dosya | İçerik |
+|---|---|
+| `frontend/settings.html` | Ayarlar sayfası (dil, tema, para birimi, profil, yedek, silme) |
+| `frontend/js/i18n/tr.json` | Türkçe dil dosyası |
+| `frontend/js/i18n/en.json` | İngilizce dil dosyası |
+| `frontend/js/i18n.js` | Dil değiştirme mantığı |
+| `frontend/css/main.css` | Animasyonlar, micro interactions ekleme |
+| `backend/routers/auth.py` | Profil güncelleme, şifre değiştirme ekleme |
+| `README.txt` | Kullanım kılavuzu |
+| `start.sh` | macOS/Linux başlatıcı |
+
+**🧪 Test:** Dil İngilizce'ye çevrilir → tüm metinler değişir → Türkçe'ye geri alınır. Profil güncellenir → şifre değiştirilir → DB yedeği indirilir. Animasyonlar çalışır. `start.bat` ile sıfırdan başlatılır ve tüm akış test edilir.
+
+---
+
+## Verification Plan
+
+Her bölüm sonunda aşağıdaki test prosedürü uygulanacak:
+
+### Otomatik Testler
+- Backend her bölümde `uvicorn` ile başlatılacak ve API endpoint'leri tarayıcı üzerinden test edilecek
+- Her bölümde `http://localhost:8000` açılarak UI kontrol edilecek
+
+### Tarayıcı Testleri (Her Bölüm Sonu)
+1. **Uygulama başlatma:** `start.bat` ile uygulama çalıştırılır
+2. **Sayfa navigasyonu:** İlgili bölüme ait tüm sayfalar açılır
+3. **CRUD testleri:** Ekleme, düzenleme, silme işlemleri yapılır
+4. **UI kontrolü:** Kartlar, grafikler, formlar, responsive layout kontrol edilir
+5. **Karanlık mod:** Tema geçişi test edilir
+6. **Hata durumları:** Boş form gönderme, geçersiz veri kontrolü
+
+### Manuel Doğrulama
+- Her bölüm sonunda sizinle birlikte tarayıcıda test edeceğiz

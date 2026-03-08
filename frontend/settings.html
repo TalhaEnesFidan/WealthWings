@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ayarlar — WealthWings</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <span class="logo-icon">💰</span>
+            <span class="logo-text">WealthWings</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item" data-i18n="nav.dashboard"><span class="nav-icon">📊</span><span
+                    class="nav-label">Dashboard</span></a>
+            <a href="transactions.html" class="nav-item" data-i18n="nav.transactions"><span
+                    class="nav-icon">💳</span><span class="nav-label">İşlemler</span></a>
+            <a href="categories.html" class="nav-item" data-i18n="nav.categories"><span class="nav-icon">🏷️</span><span
+                    class="nav-label">Kategoriler</span></a>
+            <a href="savings.html" class="nav-item" data-i18n="nav.savings"><span class="nav-icon">🏆</span><span
+                    class="nav-label">Birikim & Skor</span></a>
+            <a href="debts.html" class="nav-item" data-i18n="nav.debts"><span class="nav-icon">🛡️</span><span
+                    class="nav-label">Borç Yönetimi</span></a>
+            <a href="analysis.html" class="nav-item" data-i18n="nav.analysis"><span class="nav-icon">📈</span><span
+                    class="nav-label">Geçmiş Analiz</span></a>
+            <a href="reports.html" class="nav-item" data-i18n="nav.reports"><span class="nav-icon">📄</span><span
+                    class="nav-label">Raporlar</span></a>
+            <a href="settings.html" class="nav-item active" data-i18n="nav.settings"><span
+                    class="nav-icon">⚙️</span><span class="nav-label">Ayarlar</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn" data-i18n="nav.logout">🚪 Çıkış</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            <h1 class="page-title" data-i18n="settings.title">⚙️ Ayarlar</h1>
+            <div class="topbar-actions">
+                <button class="theme-toggle" id="themeToggle" title="Tema Değiştir">🌙</button>
+                <span class="user-greeting" id="userGreeting">Merhaba!</span>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+
+            <div class="grid-2">
+                <!-- Profil Bilgileri Formu -->
+                <div class="card fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="card-header">
+                        <h2 class="card-title" data-i18n="settings.profileTitle">👤 Profil Bilgileri</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="profileForm" class="form-stack">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="settings.username">Kullanıcı Adı</label>
+                                <input type="text" id="profUsername" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="settings.fullName">Ad Soyad</label>
+                                <input type="text" id="profFullName" class="form-control" placeholder="Ad Soyad">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="settings.email">E-posta</label>
+                                <input type="email" id="profEmail" class="form-control" placeholder="E-posta adresi">
+                            </div>
+
+                            <hr style="margin: 16px 0; border: 0; border-top: 1px solid var(--border);">
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="settings.language">Dili Seçin</label>
+                                    <select id="profLang" class="form-control">
+                                        <option value="tr">Türkçe</option>
+                                        <option value="en">English (İngilizce)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="settings.currency">Varsayılan Para
+                                        Birimi</label>
+                                    <select id="profCurrency" class="form-control">
+                                        <option value="TRY">TRY (₺)</option>
+                                        <option value="USD">USD ($)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" data-i18n="settings.saveProfile">Profili
+                                Güncelle</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Şifre Değiştir -->
+                <div class="card fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="card-header">
+                        <h2 class="card-title" data-i18n="settings.passwordTitle">🔑 Şifre Değiştir</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="passwordForm" class="form-stack">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="settings.currentPassword">Mevcut Şifre</label>
+                                <input type="password" id="currentPassword" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="settings.newPassword">Yeni Şifre</label>
+                                <input type="password" id="newPassword" class="form-control" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="settings.confirmPassword">Yeni Şifre
+                                    (Tekrar)</label>
+                                <input type="password" id="confirmPassword" class="form-control" required minlength="6">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" data-i18n="settings.updatePassword">Şifreyi
+                                Güncelle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tehlike Bölgesi (Hesap Silme) -->
+            <div class="card fade-in-up" style="animation-delay: 0.3s; border-color: var(--danger); margin-top: 24px;">
+                <div class="card-header" style="background-color: var(--danger-light);">
+                    <h2 class="card-title" style="color: var(--danger);" data-i18n="settings.dangerZone">🚩 Tehlike
+                        Bölgesi</h2>
+                </div>
+                <div class="card-body">
+                    <p class="text-sm text-muted" style="margin-bottom: 16px;" data-i18n="settings.deleteAccountDesc">
+                        Hesabınızı sildiğinizde tüm işlemleriniz, borçlarınız ve ayarlarınız geri döndürülemez şekilde
+                        silinecektir.</p>
+                    <button id="deleteAccountBtn" class="btn btn-danger" data-i18n="settings.deleteAccount">Hesabımı
+                        Kalıcı Olarak Sil</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Ekstra Animasyon Stilleri (i18n yüklenene kadar anlık titremeyi engellemek için) -->
+    <style>
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease backwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+
+</html>

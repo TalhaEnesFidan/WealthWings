@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WealthWings Dashboard — Finansal özet, gelir/gider grafikleri ve birikim takibi.">
+    <title>WealthWings — Dashboard</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Overlay (Mobil) -->
+        <div class="sidebar-overlay"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">💰</div>
+                <div class="sidebar-brand-text">WealthWings</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item active" data-i18n="nav.dashboard"><span
+                        class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+                <a href="transactions.html" class="nav-item" data-i18n="nav.transactions"><span
+                        class="nav-icon">💳</span><span class="nav-label">İşlemler</span></a>
+                <a href="categories.html" class="nav-item" data-i18n="nav.categories"><span
+                        class="nav-icon">🏷️</span><span class="nav-label">Kategoriler</span></a>
+                <a href="savings.html" class="nav-item" data-i18n="nav.savings"><span class="nav-icon">🏆</span><span
+                        class="nav-label">Birikim & Skor</span></a>
+                <a href="debts.html" class="nav-item" data-i18n="nav.debts"><span class="nav-icon">🛡️</span><span
+                        class="nav-label">Borç Yönetimi</span></a>
+                <a href="analysis.html" class="nav-item" data-i18n="nav.analysis"><span class="nav-icon">📈</span><span
+                        class="nav-label">Geçmiş Analiz</span></a>
+                <a href="reports.html" class="nav-item" data-i18n="nav.reports"><span class="nav-icon">📄</span><span
+                        class="nav-label">Raporlar</span></a>
+                <a href="settings.html" class="nav-item" data-i18n="nav.settings"><span class="nav-icon">⚙️</span><span
+                        class="nav-label">Ayarlar</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="user-avatar-text">U</div>
+                    <div>
+                        <div class="sidebar-user-name" id="user-display-name">Kullanıcı</div>
+                        <div class="sidebar-user-role">Kişisel Hesap</div>
+                    </div>
+                </div>
+                <a href="#" id="logout-btn" class="logout-link" data-i18n="nav.logout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Ana İçerik -->
+        <div class="main-wrapper">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="mobile-menu-toggle">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg>
+                    </button>
+                    <h1 class="topbar-title">📊 <span class="nav-label" data-i18n="nav.dashboard">Dashboard</span>
+                    </h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn" id="theme-toggle" title="Tema Değiştir">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- <span class="nav-label" data-i18n="nav.dashboard">Dashboard</span> İçeriği -->
+            <main class="main-content">
+                <!-- Özet Kartları (Premium Grid) -->
+                <div class="stat-grid" id="stat-grid">
+                    <div class="stat-card stat-income animate-in">
+                        <div class="stat-card-top">
+                            <div class="stat-info">
+                                <span class="stat-label">BU AY GELİR</span>
+                                <div class="stat-value" id="stat-income">0,00₺</div>
+                            </div>
+                            <div class="stat-icon">💵</div>
+                        </div>
+                        <div class="stat-card-footer">
+                            <span class="stat-meta">Nakit Girişi</span>
+                            <span class="stat-trend positive">↑ %0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-expense animate-in" style="animation-delay: 0.05s;">
+                        <div class="stat-card-top">
+                            <div class="stat-info">
+                                <span class="stat-label">BU AY GİDER</span>
+                                <div class="stat-value" id="stat-expense">0,00₺</div>
+                            </div>
+                            <div class="stat-icon">💸</div>
+                        </div>
+                        <div class="stat-card-footer">
+                            <span class="stat-meta">Toplam Harcama</span>
+                            <span class="stat-trend negative">↓ %0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-savings animate-in" style="animation-delay: 0.1s;">
+                        <div class="stat-card-top">
+                            <div class="stat-info">
+                                <span class="stat-label">NET BİRİKİM</span>
+                                <div class="stat-value" id="stat-savings">0,00₺</div>
+                            </div>
+                            <div class="stat-icon">💰</div>
+                        </div>
+                        <div class="stat-card-footer">
+                            <span class="stat-meta">Aylık Tasarruf</span>
+                            <div class="btn-ghost btn-xs" style="font-size: 10px; cursor: pointer;">Detay</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-total-savings animate-in" style="animation-delay: 0.12s;">
+                        <div class="stat-card-top">
+                            <div class="stat-info">
+                                <span class="stat-label">TOPLAM VARLIK</span>
+                                <div class="stat-value" id="stat-total-savings">0,00₺</div>
+                            </div>
+                            <div class="stat-icon" style="background: var(--grad-savings);">🏦</div>
+                        </div>
+                        <div class="stat-card-footer">
+                            <span class="stat-meta">Kümülatif Birikim</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-rate animate-in" style="animation-delay: 0.15s;">
+                        <div class="stat-card-top">
+                            <div class="stat-info">
+                                <span class="stat-label">BİRİKİM ORANI</span>
+                                <div class="stat-value" id="stat-rate">%0</div>
+                            </div>
+                            <div class="stat-icon">📊</div>
+                        </div>
+                        <div class="stat-card-footer">
+                            <span class="stat-meta">Gelir/Net Oranı</span>
+                        </div>
+                    </div>
+
+                    <!-- Borç Bakiyesi Kartı (Estetik Fix) -->
+                    <div class="stat-card stat-debt animate-in" style="animation-delay:0.2s;" id="debt-stat-card">
+                        <div class="stat-card-top">
+                            <div class="stat-info">
+                                <span class="stat-label">AKTİF BORÇLAR</span>
+                                <div class="stat-value" id="stat-debt">—</div>
+                            </div>
+                            <div class="stat-icon">🛡️</div>
+                        </div>
+                        <div class="stat-card-footer">
+                            <span class="stat-meta" id="debt-stat-meta">Güncel durum</span>
+                            <a href="/debts.html" class="btn btn-primary btn-sm"
+                                style="padding: 4px 10px; font-size: 11px; border-radius: 8px;">Yönet →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grafikler ve Son İşlemler -->
+                <div class="grid-2">
+                    <!-- Gelir vs Gider Grafiği -->
+                    <div class="card animate-in" style="animation-delay: 0.2s;">
+                        <div class="card-header">
+                            <span class="card-title">📊 Gelir vs Gider (Son 6 Ay)</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" id="chart-income-expense">
+                                <div class="chart-empty">
+                                    <div class="chart-empty-icon">📊</div>
+                                    <p class="text-muted">Henüz veri yok</p>
+                                    <p class="text-xs text-muted">İşlem ekledikçe grafikler burada görünecek</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gider Dağılımı -->
+                    <div class="card animate-in" style="animation-delay: 0.25s;">
+                        <div class="card-header">
+                            <span class="card-title">🍩 Gider Dağılımı</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" id="chart-expense-dist">
+                                <div class="chart-empty">
+                                    <div class="chart-empty-icon">🍩</div>
+                                    <p class="text-muted">Henüz gider yok</p>
+                                    <p class="text-xs text-muted">Gider ekledikçe dağılım burada görünecek</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <!-- Birikim Oranı Trend -->
+                    <div class="card animate-in" style="animation-delay: 0.3s;">
+                        <div class="card-header">
+                            <span class="card-title">📈 Birikim Oranı Trendi</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" id="chart-savings-trend">
+                                <div class="chart-empty">
+                                    <div class="chart-empty-icon">📈</div>
+                                    <p class="text-muted">Henüz birikim verisi yok</p>
+                                    <p class="text-xs text-muted">Aylık birikim oranlarınız burada izlenecek</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Son İşlemler -->
+                    <div class="card animate-in" style="animation-delay: 0.35s;">
+                        <div class="card-header">
+                            <span class="card-title">🕒 Son İşlemler</span>
+                            <a href="/transactions.html" class="btn btn-ghost btn-sm">Tümünü Gör →</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="empty-state" id="recent-transactions-empty">
+                                <div class="empty-state-icon">📝</div>
+                                <div class="empty-state-title">Henüz işlem eklenmedi</div>
+                                <div class="empty-state-text">İlk gelir veya gider işleminizi ekleyerek başlayın.
+                                </div>
+                                <a href="/transactions.html" class="btn btn-primary btn-sm" style="margin-top: 16px;">+
+                                    İşlem Ekle</a>
+                            </div>
+                            <ul class="transaction-list" id="recent-transactions" style="display: none;"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Birikim Skorkart Widget (Bölüm 3) -->
+                <div class="card animate-in" id="savings-widget-card" style="animation-delay:0.4s; display:none;">
+                    <div class="card-header">
+                        <span class="card-title">🏆 Bu Ay Birikim Durumu</span>
+                        <a href="/savings.html" class="btn btn-ghost btn-sm">Detaylı Görünüm →</a>
+                    </div>
+                    <div class="card-body" id="savings-widget-body">
+                        <!-- JS tarafından doldurulacak -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+
+</html>

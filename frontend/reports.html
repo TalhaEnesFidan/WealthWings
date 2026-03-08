@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raporlar — WealthWings</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <span class="logo-icon">💰</span>
+            <span class="logo-text">WealthWings</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label"><span
+                        class="nav-label" data-i18n="nav.dashboard">Dashboard</span></span></a>
+            <a href="transactions.html" class="nav-item"><span class="nav-icon">💳</span><span
+                    class="nav-label">İşlemler</span></a>
+            <a href="categories.html" class="nav-item"><span class="nav-icon">🏷️</span><span class="nav-label"><span
+                        class="nav-label" data-i18n="nav.categories">Kategoriler</span></span></a>
+            <a href="savings.html" class="nav-item"><span class="nav-icon">🏆</span><span class="nav-label">Birikim &
+                    Skor</span></a>
+            <a href="debts.html" class="nav-item"><span class="nav-icon">🛡️</span><span class="nav-label">Borç
+                    Yönetimi</span></a>
+            <a href="analysis.html" class="nav-item"><span class="nav-icon">📈</span><span class="nav-label">Geçmiş
+                    Analiz</span></a>
+            <a href="reports.html" class="nav-item active"><span class="nav-icon">📄</span><span class="nav-label"><span
+                        class="nav-label" data-i18n="nav.reports">Raporlar</span></span></a>
+            <a href="settings.html" class="nav-item"><span class="nav-icon">⚙️</span><span
+                    class="nav-label">Ayarlar</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">🚪 Çıkış</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            <h1 class="page-title">📄 <span class="nav-label" data-i18n="nav.reports">Raporlar</span> & Dışa Aktar</h1>
+            <div class="topbar-actions">
+                <button class="theme-toggle" id="themeToggle" title="Tema Değiştir">🌙</button>
+                <span class="user-greeting" id="userGreeting">Merhaba!</span>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+
+            <div class="grid-2">
+                <!-- Excel Aktarım -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📊 İşlem Verilerini İndir (Excel)</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary" style="margin-bottom: 20px;">
+                            Bütün işlemlerinizi filtreleyerek Excel veya CSV benzeri tablo formatında dışa aktarın.
+                        </p>
+                        <form id="excelForm" class="form-stack">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Ay (Filtre)</label>
+                                    <select id="excelMonth" class="form-control">
+                                        <option value="">Tümü</option>
+                                        <option value="1">Ocak</option>
+                                        <option value="2">Şubat</option>
+                                        <option value="3">Mart</option>
+                                        <option value="4">Nisan</option>
+                                        <option value="5">Mayıs</option>
+                                        <option value="6">Haziran</option>
+                                        <option value="7">Temmuz</option>
+                                        <option value="8">Ağustos</option>
+                                        <option value="9">Eylül</option>
+                                        <option value="10">Ekim</option>
+                                        <option value="11">Kasım</option>
+                                        <option value="12">Aralık</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Yıl (Filtre)</label>
+                                    <input type="number" id="excelYear" class="form-control" placeholder="Tümü">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-full">
+                                <span style="font-size: 16px;">⬇</span> Excel Olarak İndir
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- PDF Aktarım -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">🧾 Aylık Ekstre İndir (PDF)</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary" style="margin-bottom: 20px;">
+                            Seçtiğiniz ayın özetini, toplam gelir-gider bilgisini ve işlemlerinizi içeren resmi
+                            nitelikli PDF ekstrenizi oluşturun.
+                        </p>
+                        <form id="pdfForm" class="form-stack">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Ay</label>
+                                    <select id="pdfMonth" class="form-control" required>
+                                        <option value="1">Ocak</option>
+                                        <option value="2">Şubat</option>
+                                        <option value="3">Mart</option>
+                                        <option value="4">Nisan</option>
+                                        <option value="5">Mayıs</option>
+                                        <option value="6">Haziran</option>
+                                        <option value="7">Temmuz</option>
+                                        <option value="8">Ağustos</option>
+                                        <option value="9">Eylül</option>
+                                        <option value="10">Ekim</option>
+                                        <option value="11">Kasım</option>
+                                        <option value="12">Aralık</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Yıl</label>
+                                    <input type="number" id="pdfYear" class="form-control" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <span style="font-size: 16px;">⬇</span> PDF Ekstre Oluştur
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+
+</html>

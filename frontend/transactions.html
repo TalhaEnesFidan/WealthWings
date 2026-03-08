@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WealthWings — Gelir ve gider işlemlerinizi yönetin.">
+    <title>WealthWings — İşlemler</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .tx-date-group {
+            margin-bottom: 8px;
+        }
+
+        .tx-date-header {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 0 6px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 4px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <div class="sidebar-overlay"></div>
+
+        <!-- Sidebar (aynı yapı) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">💰</div>
+                <div class="sidebar-brand-text">WealthWings</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item" data-i18n="nav.dashboard"><span class="nav-icon">📊</span><span
+                        class="nav-label">Dashboard</span></a>
+                <a href="transactions.html" class="nav-item active" data-i18n="nav.transactions"><span
+                        class="nav-icon">💳</span><span class="nav-label">İşlemler</span></a>
+                <a href="categories.html" class="nav-item" data-i18n="nav.categories"><span
+                        class="nav-icon">🏷️</span><span class="nav-label">Kategoriler</span></a>
+                <a href="savings.html" class="nav-item" data-i18n="nav.savings"><span class="nav-icon">🏆</span><span
+                        class="nav-label">Birikim & Skor</span></a>
+                <a href="debts.html" class="nav-item" data-i18n="nav.debts"><span class="nav-icon">🛡️</span><span
+                        class="nav-label">Borç Yönetimi</span></a>
+                <a href="analysis.html" class="nav-item" data-i18n="nav.analysis"><span class="nav-icon">📈</span><span
+                        class="nav-label">Geçmiş Analiz</span></a>
+                <a href="reports.html" class="nav-item" data-i18n="nav.reports"><span class="nav-icon">📄</span><span
+                        class="nav-label">Raporlar</span></a>
+                <a href="settings.html" class="nav-item" data-i18n="nav.settings"><span class="nav-icon">⚙️</span><span
+                        class="nav-label">Ayarlar</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="user-avatar-text">U</div>
+                    <div>
+                        <div class="sidebar-user-name" id="user-display-name">Kullanıcı</div>
+                        <div class="sidebar-user-role">Kişisel Hesap</div>
+                    </div>
+                </div>
+                <a href="#" id="logout-btn" class="logout-link" data-i18n="nav.logout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="mobile-menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg></button>
+                    <h1 class="topbar-title">💰 İşlemler</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn" id="theme-toggle" title="Tema Değiştir"><svg width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg></button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="grid-2" style="grid-template-columns: 380px 1fr;">
+                    <!-- Sol: İşlem Ekleme Formu -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title" id="form-title">Yeni İşlem Ekle</span>
+                        </div>
+                        <div class="card-body">
+                            <form id="transaction-form">
+                                <!-- Tür Toggle -->
+                                <div class="form-group">
+                                    <label class="form-label">Tür</label>
+                                    <div class="toggle-group">
+                                        <button type="button" class="toggle-btn" id="type-income">💵 Gelir</button>
+                                        <button type="button" class="toggle-btn active-expense" id="type-expense">💸
+                                            Gider</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="tx-category">Kategori</label>
+                                    <select class="form-select" id="tx-category" required>
+                                        <option value="">Kategori seçin</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="tx-amount">Tutar</label>
+                                    <input type="number" step="0.01" min="0.01" class="form-input" id="tx-amount"
+                                        placeholder="0.00" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="tx-date">Tarih</label>
+                                    <input type="date" class="form-input" id="tx-date" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="tx-description">Açıklama</label>
+                                    <input type="text" class="form-input" id="tx-description"
+                                        placeholder="İşlem açıklaması (opsiyonel)">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="tx-note">Not</label>
+                                    <textarea class="form-textarea" id="tx-note" placeholder="Ek not (opsiyonel)"
+                                        rows="2"></textarea>
+                                </div>
+
+                                <div style="display:flex; gap:10px;">
+                                    <button type="submit" class="btn btn-primary btn-block"
+                                        id="tx-submit">Kaydet</button>
+                                    <button type="button" class="btn btn-secondary" id="tx-cancel" style="display:none;"
+                                        onclick="resetForm()">İptal</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Sağ: İşlem Listesi -->
+                    <div>
+                        <!-- Filtreler -->
+                        <div class="card" style="margin-bottom: 16px;">
+                            <div class="card-body" style="padding: 14px 20px;">
+                                <div class="filters">
+                                    <input type="text" class="filter-input" id="filter-search" placeholder="🔍 Ara..."
+                                        style="min-width:160px;">
+                                    <select class="filter-input" id="filter-type">
+                                        <option value="">Tümü</option>
+                                        <option value="income">Gelir</option>
+                                        <option value="expense">Gider</option>
+                                    </select>
+                                    <select class="filter-input" id="filter-category">
+                                        <option value="">Tüm Kategoriler</option>
+                                    </select>
+                                    <input type="date" class="filter-input" id="filter-from" title="Başlangıç tarihi">
+                                    <input type="date" class="filter-input" id="filter-to" title="Bitiş tarihi">
+                                </div>
+                                <div id="filter-summary" class="text-sm text-muted" style="margin-top:8px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- İşlem Listesi -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">İşlem Listesi</span>
+                                <span class="text-sm text-muted" id="transactions-total"></span>
+                            </div>
+                            <div class="card-body" id="transactions-list">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">📝</div>
+                                    <div class="empty-state-title">Yükleniyor...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/transactions.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+
+</html>

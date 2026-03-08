@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birikim & Skorkart — WealthWings</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">💰</div>
+            <div class="sidebar-brand-text">WealthWings</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item" data-i18n="nav.dashboard"><span class="nav-icon">📊</span><span
+                    class="nav-label">Dashboard</span></a>
+            <a href="transactions.html" class="nav-item" data-i18n="nav.transactions"><span
+                    class="nav-icon">💳</span><span class="nav-label">İşlemler</span></a>
+            <a href="categories.html" class="nav-item" data-i18n="nav.categories"><span class="nav-icon">🏷️</span><span
+                    class="nav-label">Kategoriler</span></a>
+            <a href="savings.html" class="nav-item active" data-i18n="nav.savings"><span class="nav-icon">🏆</span><span
+                    class="nav-label">Birikim & Skor</span></a>
+            <a href="debts.html" class="nav-item" data-i18n="nav.debts"><span class="nav-icon">🛡️</span><span
+                    class="nav-label">Borç Yönetimi</span></a>
+            <a href="analysis.html" class="nav-item" data-i18n="nav.analysis"><span class="nav-icon">📈</span><span
+                    class="nav-label">Geçmiş Analiz</span></a>
+            <a href="reports.html" class="nav-item" data-i18n="nav.reports"><span class="nav-icon">📄</span><span
+                    class="nav-label">Raporlar</span></a>
+            <a href="settings.html" class="nav-item" data-i18n="nav.settings"><span class="nav-icon">⚙️</span><span
+                    class="nav-label">Ayarlar</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-avatar" id="user-avatar-text">U</div>
+                <div>
+                    <div class="sidebar-user-name" id="user-display-name">Kullanıcı</div>
+                    <div class="sidebar-user-role">Kişisel Hesap</div>
+                </div>
+            </div>
+            <a href="#" id="logout-btn" class="logout-link" data-i18n="nav.logout">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                <span>Çıkış Yap</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            <h1 class="page-title">🏆 <span data-i18n="nav.savings">Birikim & Skor</span></h1>
+            <div class="topbar-actions">
+                <button class="theme-toggle" id="themeToggle" title="Tema Değiştir">🌙</button>
+                <span class="user-greeting" id="userGreeting">Merhaba!</span>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+
+            <!-- Motivasyon Banner -->
+            <div class="motivation-banner" id="motivationBanner">
+                <div class="motivation-content">
+                    <span class="motivation-emoji" id="motivationEmoji">🎯</span>
+                    <span class="motivation-text" id="motivationText">Yükleniyor...</span>
+                </div>
+            </div>
+
+            <!-- Üst Stat Kartları -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Bu Ay Birikim Oranı</span>
+                        <span class="stat-value" id="currentRate">—</span>
+                    </div>
+                    <div class="stat-badge" id="currentBadge"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Bu Ay Hedef</span>
+                        <span class="stat-value" id="currentGoal">—</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Genel Ortalama</span>
+                        <span class="stat-value" id="avgRate">—</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Toplam Net Birikim</span>
+                        <span class="stat-value" id="totalSavings">—</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Hedef Serisi</span>
+                        <span class="stat-value" id="goalStreak">— ay</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <span class="stat-label">En Yüksek Oran</span>
+                        <span class="stat-value" id="bestRate">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İki Sütun Layout -->
+            <div class="two-col-grid">
+
+                <!-- Sol: Hedef Belirleme Formu -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">🎯 Aylık Hedef Belirle</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="suggestion-box" id="suggestionBox" style="display:none">
+                            <span id="suggestionText"></span>
+                        </div>
+                        <form id="goalForm" class="form-stack">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Ay</label>
+                                    <select id="goalMonth" class="form-control">
+                                        <option value="1">Ocak</option>
+                                        <option value="2">Şubat</option>
+                                        <option value="3">Mart</option>
+                                        <option value="4">Nisan</option>
+                                        <option value="5">Mayıs</option>
+                                        <option value="6">Haziran</option>
+                                        <option value="7">Temmuz</option>
+                                        <option value="8">Ağustos</option>
+                                        <option value="9">Eylül</option>
+                                        <option value="10">Ekim</option>
+                                        <option value="11">Kasım</option>
+                                        <option value="12">Aralık</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Yıl</label>
+                                    <input type="number" id="goalYear" class="form-control" value="2025" min="2020"
+                                        max="2030" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Hedef Birikim Oranı (%)</label>
+                                <div class="range-container">
+                                    <input type="range" id="goalRateRange" class="range-input" min="0" max="100"
+                                        value="60" step="5" />
+                                    <span class="range-value" id="rangeValue">%60</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Hedef Başlığı</label>
+                                <input type="text" id="goalTitle" class="form-control"
+                                    placeholder="örn: Bu ay %60 biriktir!" />
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">🎯 Hedef Kaydet</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sağ: Bu Ay İlerleme -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📊 Bu Ay Durumu</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress-section" id="currentMonthProgress">
+                            <div class="progress-header">
+                                <span id="progressLabel">Birikim Oranı</span>
+                                <span id="progressValue">—</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="savingsProgressBar" style="width:0%"></div>
+                            </div>
+                            <div class="progress-footer">
+                                <span>Gelir: <strong id="pIncome">—</strong></span>
+                                <span>Gider: <strong id="pExpense">—</strong></span>
+                                <span>Net: <strong id="pNet">—</strong></span>
+                            </div>
+                        </div>
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="big-badge" id="bigBadge"></div>
+                            <div class="badge-info" id="badgeInfo"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Birikim Oranı Trend Grafiği -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📈 Birikim Oranı Trendi</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height:300px">
+                        <canvas id="savingsTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skorkart Tablosu -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">🏆 Aylık Skorkart</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="data-table" id="scorecardTable">
+                            <thead>
+                                <tr>
+                                    <th>Ay / Yıl</th>
+                                    <th>Gelir</th>
+                                    <th>Gider</th>
+                                    <th>Net Birikim</th>
+                                    <th>Oran</th>
+                                    <th>Hedef</th>
+                                    <th>Rozet</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scorecardBody">
+                                <tr>
+                                    <td colspan="8" class="empty-state">Yükleniyor...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast Bildirimleri -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/savings.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+
+</html>

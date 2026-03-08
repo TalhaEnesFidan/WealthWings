@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Veritabanı ve Hassas Veriler
+data/
+*.db
+*.sqlite3
+.env
+secret.json
+
+# IDE / OS dosyaları
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

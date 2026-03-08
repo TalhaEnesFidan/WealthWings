@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WealthWings — Gelir ve gider kategorilerinizi yönetin.">
+    <title>WealthWings — Kategoriler</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .category-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .category-card:hover {
+            box-shadow: var(--shadow-sm);
+            transform: translateX(3px);
+        }
+
+        .category-card-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-card-icon {
+            font-size: 20px;
+        }
+
+        .category-card-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .category-card-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .category-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <div class="sidebar-overlay"></div>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">💰</div>
+                <div class="sidebar-brand-text">WealthWings</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item" data-i18n="nav.dashboard"><span class="nav-icon">📊</span><span
+                        class="nav-label">Dashboard</span></a>
+                <a href="transactions.html" class="nav-item" data-i18n="nav.transactions"><span
+                        class="nav-icon">💳</span><span class="nav-label">İşlemler</span></a>
+                <a href="categories.html" class="nav-item active" data-i18n="nav.categories"><span
+                        class="nav-icon">🏷️</span><span class="nav-label">Kategoriler</span></a>
+                <a href="savings.html" class="nav-item" data-i18n="nav.savings"><span class="nav-icon">🏆</span><span
+                        class="nav-label">Birikim & Skor</span></a>
+                <a href="debts.html" class="nav-item" data-i18n="nav.debts"><span class="nav-icon">🛡️</span><span
+                        class="nav-label">Borç Yönetimi</span></a>
+                <a href="analysis.html" class="nav-item" data-i18n="nav.analysis"><span class="nav-icon">📈</span><span
+                        class="nav-label">Geçmiş Analiz</span></a>
+                <a href="reports.html" class="nav-item" data-i18n="nav.reports"><span class="nav-icon">📄</span><span
+                        class="nav-label">Raporlar</span></a>
+                <a href="settings.html" class="nav-item" data-i18n="nav.settings"><span class="nav-icon">⚙️</span><span
+                        class="nav-label">Ayarlar</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar" id="user-avatar-text">U</div>
+                    <div>
+                        <div class="sidebar-user-name" id="user-display-name">Kullanıcı</div>
+                        <div class="sidebar-user-role">Kişisel Hesap</div>
+                    </div>
+                </div>
+                <a href="#" id="logout-btn" class="logout-link" data-i18n="nav.logout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Çıkış Yap</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="mobile-menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg></button>
+                    <h1 class="topbar-title">🏷️ <span class="nav-label" data-i18n="nav.categories">Kategoriler</span>
+                    </h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn" id="theme-toggle" title="Tema Değiştir"><svg width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg></button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Kategori Ekleme Formu -->
+                <div class="card" style="margin-bottom: 24px; max-width: 500px;">
+                    <div class="card-header">
+                        <span class="card-title" id="cat-form-title">Yeni Kategori</span>
+                    </div>
+                    <div class="card-body">
+                        <form id="category-form">
+                            <div class="form-group">
+                                <label class="form-label" for="cat-name">Kategori Adı</label>
+                                <input type="text" class="form-input" id="cat-name" placeholder="Örn: Kırtasiye"
+                                    required>
+                            </div>
+                            <div style="display:flex; gap:12px;">
+                                <div class="form-group" style="flex:1;">
+                                    <label class="form-label" for="cat-type">Tür</label>
+                                    <select class="form-select" id="cat-type" required>
+                                        <option value="expense">Gider</option>
+                                        <option value="income">Gelir</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="width:80px;">
+                                    <label class="form-label" for="cat-icon">İkon</label>
+                                    <input type="text" class="form-input" id="cat-icon" placeholder="📌" maxlength="4"
+                                        style="text-align:center; font-size:20px;">
+                                </div>
+                                <div class="form-group" style="width:80px;">
+                                    <label class="form-label" for="cat-color">Renk</label>
+                                    <input type="color" class="form-input" id="cat-color" value="#6366f1"
+                                        style="height:42px; padding:4px;">
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:10px;">
+                                <button type="submit" class="btn btn-primary" id="cat-submit">Ekle</button>
+                                <button type="button" class="btn btn-secondary" id="cat-cancel" style="display:none;"
+                                    onclick="resetCategoryForm()">İptal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Kategori Listeleri -->
+                <div class="category-grid">
+                    <div>
+                        <div class="category-section-title">💵 Gelir <span
+                                data-i18n="nav.categories">Kategorileri</span></div>
+                        <div id="income-categories" style="display:flex; flex-direction:column; gap:8px;"></div>
+                    </div>
+                    <div>
+                        <div class="category-section-title">💸 Gider <span
+                                data-i18n="nav.categories">Kategorileri</span></div>
+                        <div id="expense-categories" style="display:flex; flex-direction:column; gap:8px;"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/categories.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+
+</html>
