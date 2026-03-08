@@ -11,3 +11,4 @@ python-dotenv
 aiofiles
 bcrypt
 python-dateutil
+psycopg2-binary==2.9.9; sys_platform != 'win32'
